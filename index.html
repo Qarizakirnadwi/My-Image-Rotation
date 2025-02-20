@@ -21,31 +21,40 @@
 const cube = document.querySelector('.cube');
 let rotating = true;
 let startX = 0, startY = 0;
+let currentX = 0, currentY = 0;
 
 function stopRotation() {
     rotating = false;
-    cube.style.animation = 'none';
+    cube.style.animation = ''; // Remove animation completely
+    cube.style.transform = window.getComputedStyle(cube).transform; // Preserve last position
 }
 
 function handleTouchStart(event) {
     stopRotation();
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
+    currentX = 0;
+    currentY = 0;
 }
 
 function handleTouchMove(event) {
     let moveX = event.touches[0].clientX - startX;
     let moveY = event.touches[0].clientY - startY;
-    cube.style.transform = `rotateX(${moveY}deg) rotateY(${moveX}deg)`;
+    currentX += moveX * 0.5;
+    currentY += moveY * 0.5;
+    cube.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
 }
 
 function handleTouchEnd() {
-    rotating = true;
+    rotating = false;
 }
 
-cube.addEventListener('touchstart', handleTouchStart);
-cube.addEventListener('touchmove', handleTouchMove);
-cube.addEventListener('touchend', handleTouchEnd);
+cube.addEventListener('touchstart', handleTouchStart, { passive: true });
+cube.addEventListener('touchmove', handleTouchMove, { passive: true });
+cube.addEventListener('touchend', handleTouchEnd, { passive: true });
+
 
     </script>
 </body>
