@@ -48,7 +48,8 @@ function handleTouchMove(event) {
 }
 
 function handleTouchEnd() {
-    rotating = false;
+    rotating = true;
+    cube.style.animation = 'autoRotate 12s infinite linear'; // Restart rotation
 }
 
 cube.addEventListener('touchstart', handleTouchStart, { passive: true });
