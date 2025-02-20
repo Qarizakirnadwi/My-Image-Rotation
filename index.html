@@ -22,26 +22,29 @@ const cube = document.querySelector('.cube');
 let rotating = true;
 let startX = 0, startY = 0;
 let currentX = 0, currentY = 0;
+let autoRotateInterval;
+
+function startAutoRotation() {
+    if (!rotating) return;
+    cube.style.animation = 'autoRotate 12s infinite linear';
+}
 
 function stopRotation() {
     rotating = false;
-    cube.style.animation = ''; // Remove animation completely
-    cube.style.transform = window.getComputedStyle(cube).transform; // Preserve last position
+    cube.style.animation = 'none';
 }
 
 function handleTouchStart(event) {
     stopRotation();
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
-    currentX = 0;
-    currentY = 0;
 }
 
 function handleTouchMove(event) {
     let moveX = event.touches[0].clientX - startX;
     let moveY = event.touches[0].clientY - startY;
-    currentX += moveX * 0.5;
-    currentY += moveY * 0.5;
+    currentX += moveX * 0.3;
+    currentY += moveY * 0.3;
     cube.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg)`;
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
@@ -49,12 +52,17 @@ function handleTouchMove(event) {
 
 function handleTouchEnd() {
     rotating = true;
-    cube.style.animation = 'autoRotate 12s infinite linear'; // Restart rotation
+    setTimeout(startAutoRotation, 2000); // Restart auto-rotation after 2s
 }
 
+// Event Listeners
 cube.addEventListener('touchstart', handleTouchStart, { passive: true });
-cube.addEventListener('touchmove', handleTouchMove, { passive: true });
+cube.addEventListener('touchmove', handleTouchMove, { passive: false });
 cube.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+// Start auto-rotation initially
+startAutoRotation();
+
 
 
     </script>
