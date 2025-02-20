@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My images rotation</title>
+    <link rel="stylesheet" href="cube.css">
+</head>
+<body>
+    <div class="scene">
+        <div class="cube">
+            <div class="face front"><img src="Amrapali pic.jpg" alt="Image 1"></div>
+            <div class="face back"><img src="me 1.jpeg" alt="Image 2"></div>
+            <div class="face right"><img src="qari zakir.jpeg" alt="Image 3"></div>
+            <div class="face left"><img src="me3.jpeg" alt="Image 4"></div>
+            <div class="face top"><img src="me aligonj2.jpeg" alt="Image 5"></div>
+            <div class="face bottom"><img src="me4.jpeg" alt="Image 6"></div>
+        </div>
+    </div>
+    <script>
+        let cube = document.querySelector(".cube");
+let startX, startY, currentX = 0, currentY = 0;
+
+document.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e) => {
+    let moveX = e.touches[0].clientX - startX;
+    let moveY = e.touches[0].clientY - startY;
+
+    currentY += moveX / 2; /* Horizontal swipe → Y rotation */
+    currentX -= moveY / 2; /* Vertical swipe → X rotation */
+
+    cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+});
+
+    </script>
+</body>
+</html>
