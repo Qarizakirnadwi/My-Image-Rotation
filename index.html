@@ -18,23 +18,34 @@
         </div>
     </div>
     <script>
-        let cube = document.querySelector(".cube");
-let startX, startY, currentX = 0, currentY = 0;
+const cube = document.querySelector('.cube');
+let rotating = true;
+let startX = 0, startY = 0;
 
-document.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-});
+function stopRotation() {
+    rotating = false;
+    cube.style.animation = 'none';
+}
 
-document.addEventListener("touchmove", (e) => {
-    let moveX = e.touches[0].clientX - startX;
-    let moveY = e.touches[0].clientY - startY;
+function handleTouchStart(event) {
+    stopRotation();
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+}
 
-    currentY += moveX / 2; /* Horizontal swipe → Y rotation */
-    currentX -= moveY / 2; /* Vertical swipe → X rotation */
+function handleTouchMove(event) {
+    let moveX = event.touches[0].clientX - startX;
+    let moveY = event.touches[0].clientY - startY;
+    cube.style.transform = `rotateX(${moveY}deg) rotateY(${moveX}deg)`;
+}
 
-    cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
-});
+function handleTouchEnd() {
+    rotating = true;
+}
+
+cube.addEventListener('touchstart', handleTouchStart);
+cube.addEventListener('touchmove', handleTouchMove);
+cube.addEventListener('touchend', handleTouchEnd);
 
     </script>
 </body>
